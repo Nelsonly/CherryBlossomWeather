@@ -222,17 +222,17 @@
                                 android:orientation="horizontal"
                                 android:paddingRight="@dimen/dp_12">
 
-                                <com.llw.goodweather.view.horizonview.IndexHorizontalScrollView
+                                <com.example.cherryblossomweather.view.horizonview.IndexHorizontalScrollView
                                     android:id="@+id/hsv"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content">
 
-                                    <com.llw.goodweather.view.horizonview.HourlyForecastView
+                                    <com.example.cherryblossomweather.view.horizonview.HourlyForecastView
                                         android:id="@+id/hourly"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content" />
 
-                                </com.llw.goodweather.view.horizonview.IndexHorizontalScrollView>
+                                </com.example.cherryblossomweather.view.horizonview.IndexHorizontalScrollView>
 
                             </LinearLayout>
                         </RelativeLayout>
@@ -312,7 +312,7 @@
                             android:orientation="horizontal">
 
                             <!--太阳视图-->
-                            <com.llw.goodweather.view.skyview.SunView
+                            <com.example.cherryblossomweather.view.skyview.SunView
                                 android:id="@+id/sun_view"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/dp_240"
@@ -322,7 +322,7 @@
                                 app:sun_font_color="@color/color_a4a4a4"
                                 app:sun_font_size="12px" />
                             <!--月亮视图-->
-                            <com.llw.goodweather.view.skyview.SunView
+                            <com.example.cherryblossomweather.view.skyview.SunView
                                 android:id="@+id/moon_view"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/dp_240"

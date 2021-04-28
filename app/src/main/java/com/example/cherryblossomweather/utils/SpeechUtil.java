@@ -10,6 +10,7 @@ import android.os.MemoryFile;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.RecognizerResult;

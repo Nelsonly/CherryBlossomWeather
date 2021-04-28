@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/CherryBlossomWeather.iml" filepath="$PROJECT_DIR$/.idea/CherryBlossomWeather.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/CherryBlossomWeather.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/CherryBlossomWeather.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mvplibrary/CherryBlossomWeather.mvplibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/mvplibrary/CherryBlossomWeather.mvplibrary.iml" />
     </modules>
   </component>
 </project>

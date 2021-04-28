@@ -53,7 +53,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/sp_16" />
 
-        <com.llw.mvplibrary.view.SwitchButton
+        <com.example.mvplibrary.view.SwitchButton
             android:id="@+id/wb_everyday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -80,7 +80,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/sp_16" />
 
-        <com.llw.mvplibrary.view.SwitchButton
+        <com.example.mvplibrary.view.SwitchButton
             android:id="@+id/wb_voice_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

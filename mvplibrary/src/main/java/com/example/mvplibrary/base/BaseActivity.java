@@ -21,14 +21,15 @@ import butterknife.Unbinder;
  * @author
  */
 public abstract class BaseActivity extends AppCompatActivity implements UiCallBack {
-    //private static final int FAST_CLICK_DELAY_TIME = 500;
-    //private static long lastClickTime;
+    private static final int FAST_CLICK_DELAY_TIME = 500;
+    private static long lastClickTime;
     protected Activity context;
     private Unbinder unbinder;
     /**
      * 加载弹窗
      */
-   // private Dialog mDialog;
+    private Dialog mDialog;
+
 
 
     @Override
@@ -62,7 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity implements UiCallBa
     /**
      * 弹窗出现
      */
-    /*protected void showLoadingDialog() {
+    protected void showLoadingDialog() {
         if (mDialog == null) {
             mDialog = new Dialog(context, R.style.loading_dialog);
         }
@@ -70,24 +71,31 @@ public abstract class BaseActivity extends AppCompatActivity implements UiCallBa
         mDialog.setCancelable(false);
         mDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         mDialog.show();
-    }*/
+    }
+
 
     /**
      * 弹窗消失
      */
-    /*protected void dismissLoadingDialog() {
+    protected void dismissLoadingDialog() {
         if (mDialog != null) {
             mDialog.dismiss();
         }
         mDialog = null;
-    }*/
+    }
+
 
     /**
      * 返回
      *
      * @param toolbar
      */
-    /*protected void Back(Toolbar toolbar) {
+    /**
+     * 返回
+     *
+     * @param toolbar
+     */
+    protected void Back(Toolbar toolbar) {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,14 +105,15 @@ public abstract class BaseActivity extends AppCompatActivity implements UiCallBa
                 }
             }
         });
-    }*/
+    }
+
 
     /**
      * 两次点击间隔不能少于500ms
      *
      * @return flag
      */
-    /*protected static boolean isFastClick() {
+    protected static boolean isFastClick() {
         boolean flag = true;
         long currentClickTime = System.currentTimeMillis();
         if ((currentClickTime - lastClickTime) >= FAST_CLICK_DELAY_TIME) {
@@ -113,6 +122,5 @@ public abstract class BaseActivity extends AppCompatActivity implements UiCallBa
         lastClickTime = currentClickTime;
 
         return flag;
-    }*/
-
+    }
 }

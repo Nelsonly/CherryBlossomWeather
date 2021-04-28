@@ -118,7 +118,7 @@
                 android:background="@mipmap/icon_delete_history" />
         </LinearLayout>
 
-        <com.llw.mvplibrary.view.flowlayout.TagFlowLayout
+        <com.example.mvplibrary.view.flowlayout.TagFlowLayout
             android:id="@+id/fl_search_records"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

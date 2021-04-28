@@ -123,111 +123,105 @@ import static com.example.mvplibrary.utils.RecyclerViewAnimation.runLayoutAnimat
  *
  * @author
  */
-@RequiresApi(api = Build.VERSION_CODES.M)
 public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
         implements WeatherContract.IWeatherView, View.OnScrollChangeListener {
 
-   // TextView tvWarn;//灾害预警跑马灯
-    TextView tvWarn=(TextView)findViewById(R.id.tv_warn);
-
-    TextView tvWeek=(TextView)findViewById(R.id.tv_week);//星期
-
-    TextView tvAirInfo=(TextView)findViewById(R.id.tv_air_info);//空气质量
-
-    TextView tvInfo=(TextView)findViewById(R.id.tv_info);//天气状况
-
-    TextView tvTemperature=(TextView)findViewById(R.id.tv_temperature);//温度
-
-    TextView tvTempHeight=(TextView)findViewById(R.id.tv_temp_height);//最高温
-
-    TextView tvTempLow=(TextView)findViewById(R.id.tv_temp_low);//最低温
-
-    TextView tvCity=(TextView)findViewById(R.id.tv_city);//城市
-
-    TextView tvOldTime=(TextView)findViewById(R.id.tv_old_time);//最近更新时间
-
-    RecyclerView rv=(RecyclerView)findViewById(R.id.rv);//天气预报显示列表
-
-    TextView tvUv=(TextView)findViewById(R.id.tv_uv);//紫外线
-
-    TextView tvComf=(TextView)findViewById(R.id.tv_comf);//舒适度
-
-    TextView tvTrav=(TextView)findViewById(R.id.tv_trav);//旅游指数
-
-    TextView tvSport=(TextView)findViewById(R.id.tv_sport);//运动指数
-
-    TextView tvCw=(TextView)findViewById(R.id.tv_cw);//洗车指数
-
-    TextView tvAir=(TextView)findViewById(R.id.tv_air);//空气指数
-
-    TextView tvDrsg=(TextView)findViewById(R.id.tv_drsg);//穿衣指数
-
-    TextView tvFlu=(TextView)findViewById(R.id.tv_flu);//感冒指数
-
-    WhiteWindmills wwBig=(WhiteWindmills)findViewById(R.id.ww_big);//大风车
-
-    WhiteWindmills wwSmall=(WhiteWindmills)findViewById(R.id.ww_small);//小风车
-
-
-    TextView tvWindDirection=(TextView)findViewById(R.id.tv_wind_direction);//风向
-
-    TextView tvWindPower=(TextView)findViewById(R.id.tv_wind_power);//风力
-
-
-    ImageView ivMap=(ImageView)findViewById(R.id.iv_map);//地图天气
-
-    ImageView ivAdd=(ImageView)findViewById(R.id.iv_add);//更多功能
-
-    ImageView bg=(ImageView)findViewById(R.id.bg);//背景图
-
-
-    SmartRefreshLayout refresh=(SmartRefreshLayout)findViewById(R.id.refresh);//刷新布局
-
-    ImageView ivLocation=(ImageView)findViewById(R.id.iv_location);//定位图标
-
-    RecyclerView rvHourly=(RecyclerView)findViewById(R.id.rv_hourly);//逐小时天气显示列表
-
-    RoundProgressBar rpbAqi=(RoundProgressBar)findViewById(R.id.rpb_aqi);//污染指数圆环
-
-    TextView tvPm10=(TextView)findViewById(R.id.tv_pm10);//PM10
-
-    TextView tvPm25=(TextView)findViewById (R.id.tv_pm25);//PM2.5
-
-    TextView tvNo2=(TextView)findViewById (R.id.tv_no2);//二氧化氮
-
-    TextView tvSo2=(TextView)findViewById (R.id.tv_so2);//二氧化硫
-
-    TextView tvO3=(TextView)findViewById (R.id.tv_so3);//臭氧
-
-    TextView tvCo=(TextView)findViewById (R.id.tv_co);//一氧化碳
-
-    TextView tvTitle=(TextView)findViewById (R.id.tv_title);//标题
-
-    LinearLayout laySlideArea=(LinearLayout)findViewById(R.id.lay_slide_area);//当向上滑动超过这个布局的高度时，改变Toolbar中的TextView的显示文本
-
-    NestedScrollView scrollView=(NestedScrollView)findViewById(R.id.scroll_view);//滑动View
-
-    TextView tvMoreDaily=(TextView)findViewById(R.id.tv_more_daily);//更多天气预报
-
-    TextView tvMoreAir=(TextView)findViewById(R.id.tv_more_air);//更多空气信息
-
-    TextView tvMoreLifestyle=(TextView)findViewById(R.id.tv_more_lifestyle);//更多生活建议
-
-
-    TextView tvPrecipitation=(TextView)findViewById(R.id.tv_precipitatio);//降水预告
-
-    TextView tvPrecMore=(TextView)findViewById(R.id.tv_prec_more);//降水详情
-
-    RecyclerView rvPrecDetail=(RecyclerView)findViewById(R.id.rv_prec_detail);//分钟级降水列表
-
-    RecyclerView rvChangeCity=(RecyclerView)findViewById(R.id.rv_change_city);//点击切换常用城市
-
-    ImageView ivVoiceBroadcast=(ImageView)findViewById(R.id.iv_voice_broadcast);//语音播报天气
-
-    TextView tvBroadcastState=(TextView)findViewById(R.id.tv_broadcast_state);//播报状态
-
-    FloatingActionButton fabVoiceSearch=(FloatingActionButton)findViewById(R.id.fab_voice_search);//语音搜索浮动按钮
-
+    @BindView(R.id.tv_warn)
+    TextView tvWarn;//灾害预警跑马灯
+    @BindView(R.id.tv_week)
+    TextView tvWeek;//星期
+    @BindView(R.id.tv_air_info)
+    TextView tvAirInfo;//空气质量
+    @BindView(R.id.tv_info)
+    TextView tvInfo;//天气状况
+    @BindView(R.id.tv_temperature)
+    TextView tvTemperature;//温度
+    @BindView(R.id.tv_temp_height)
+    TextView tvTempHeight;//最高温
+    @BindView(R.id.tv_temp_low)
+    TextView tvTempLow;//最低温
+    @BindView(R.id.tv_city)
+    TextView tvCity;//城市
+    @BindView(R.id.tv_old_time)
+    TextView tvOldTime;//最近更新时间
+    @BindView(R.id.rv)
+    RecyclerView rv;//天气预报显示列表
+    @BindView(R.id.tv_uv)
+    TextView tvUv;//紫外线
+    @BindView(R.id.tv_comf)
+    TextView tvComf;//舒适度
+    @BindView(R.id.tv_trav)
+    TextView tvTrav;//旅游指数
+    @BindView(R.id.tv_sport)
+    TextView tvSport;//运动指数
+    @BindView(R.id.tv_cw)
+    TextView tvCw;//洗车指数
+    @BindView(R.id.tv_air)
+    TextView tvAir;//空气指数
+    @BindView(R.id.tv_drsg)
+    TextView tvDrsg;//穿衣指数
+    @BindView(R.id.tv_flu)
+    TextView tvFlu;//感冒指数
+    @BindView(R.id.ww_big)
+    WhiteWindmills wwBig;//大风车
+    @BindView(R.id.ww_small)
+    WhiteWindmills wwSmall;//小风车
+    @BindView(R.id.tv_wind_direction)
+    TextView tvWindDirection;//风向
+    @BindView(R.id.tv_wind_power)
+    TextView tvWindPower;//风力
+    @BindView(R.id.iv_map)
+    ImageView ivMap;//地图天气
+    @BindView(R.id.iv_add)
+    ImageView ivAdd;//更多功能
+    @BindView(R.id.bg)
+    ImageView bg;//背景图
+    @BindView(R.id.refresh)
+    SmartRefreshLayout refresh;//刷新布局
+    @BindView(R.id.iv_location)
+    ImageView ivLocation;//定位图标
+    @BindView(R.id.rv_hourly)
+    RecyclerView rvHourly;//逐小时天气显示列表
+    @BindView(R.id.rpb_aqi)
+    RoundProgressBar rpbAqi;//污染指数圆环
+    @BindView(R.id.tv_pm10)
+    TextView tvPm10;//PM10
+    @BindView(R.id.tv_pm25)
+    TextView tvPm25;//PM2.5
+    @BindView(R.id.tv_no2)
+    TextView tvNo2;//二氧化氮
+    @BindView(R.id.tv_so2)
+    TextView tvSo2;//二氧化硫
+    @BindView(R.id.tv_o3)
+    TextView tvO3;//臭氧
+    @BindView(R.id.tv_co)
+    TextView tvCo;//一氧化碳
+    @BindView(R.id.tv_title)
+    TextView tvTitle;//标题
+    @BindView(R.id.lay_slide_area)
+    LinearLayout laySlideArea;//当向上滑动超过这个布局的高度时，改变Toolbar中的TextView的显示文本
+    @BindView(R.id.scroll_view)
+    NestedScrollView scrollView;//滑动View
+    @BindView(R.id.tv_more_daily)
+    TextView tvMoreDaily;//更多天气预报
+    @BindView(R.id.tv_more_air)
+    TextView tvMoreAir;//更多空气信息
+    @BindView(R.id.tv_more_lifestyle)
+    TextView tvMoreLifestyle;//更多生活建议
+    @BindView(R.id.tv_precipitation)
+    TextView tvPrecipitation;//降水预告
+    @BindView(R.id.tv_prec_more)
+    TextView tvPrecMore;//降水详情
+    @BindView(R.id.rv_prec_detail)
+    RecyclerView rvPrecDetail;//分钟级降水列表
+    @BindView(R.id.rv_change_city)
+    RecyclerView rvChangeCity;//点击切换常用城市
+    @BindView(R.id.iv_voice_broadcast)
+    ImageView ivVoiceBroadcast;//语音播报天气
+    @BindView(R.id.tv_broadcast_state)
+    TextView tvBroadcastState;//播报状态
+    @BindView(R.id.fab_voice_search)
+    FloatingActionButton fabVoiceSearch;//语音搜索浮动按钮
     private boolean changeCityState = false;//常用城市列表  收缩状态  false 收缩  true 展开
 
     private boolean isChangeCity = false;//是否可以展开，如果没有添加常用城市，自然不能展开

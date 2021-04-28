@@ -2,15 +2,17 @@ package com.example.cherryblossomweather;
 
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.webkit.WebView;
 
-import com.example.cherryblossomweather.BaseApplication;
+import com.baidu.mapapi.CoordType;
+import com.baidu.mapapi.SDKInitializer;
+import com.example.mvplibrary.BaseApplication;
 import com.example.mvplibrary.utils.ActivityManager;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -19,8 +21,17 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.tencent.bugly.crashreport.CrashReport;
 
-public class WeatherApplication extends BaseApplication{
+import org.litepal.LitePal;
+
+/**
+ * 项目管理
+ *
+ * @author llw
+ */
+public class WeatherApplication extends BaseApplication {
+
     /**
      * 应用实例
      */
@@ -90,13 +101,25 @@ public class WeatherApplication extends BaseApplication{
             }
         });
 
+        //初始化数据库
+        LitePal.initialize(this);
+
+        //在使用SDK各组件之前初始化context信息，传入ApplicationContext
+        SDKInitializer.initialize(this);
+
+        //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
+        //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
+        SDKInitializer.setCoordType(CoordType.BD09LL);
+
+        CrashReport.initCrashReport(getApplicationContext(), "d3637c0f25", true);
+        //配置讯飞语音SDK
+//        SpeechUtility.createUtility(this, SpeechConstant.APPID +"=6018c2cb");
     }
 
 
     public static ActivityManager getActivityManager() {
         return activityManager;
     }
-
 
 
     @Override
@@ -124,6 +147,4 @@ public class WeatherApplication extends BaseApplication{
             }
         });
     }
-
-
 }

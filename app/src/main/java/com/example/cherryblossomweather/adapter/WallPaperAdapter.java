@@ -7,13 +7,13 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 
-//import com.baidu.panosdk.plugin.indoor.util.ScreenUtils;
+import com.baidu.panosdk.plugin.indoor.util.ScreenUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-//import com.google.android.material.imageview.ShapeableImageView;
 import com.example.cherryblossomweather.R;
 import com.example.cherryblossomweather.bean.WallPaperResponse;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.List;
 

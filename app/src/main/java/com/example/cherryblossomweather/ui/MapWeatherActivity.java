@@ -370,7 +370,7 @@ public class MapWeatherActivity extends MvpActivity<MapWeatherContract.MapWeathe
      *
      * @param latLng 坐标
      */
-    private void resetLocation(Latlng latLng) {
+    private void resetLocation(LatLng latLng) {
         bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.icon_marka);// 设置marker图标
         //通过LatLng获取经纬度
         markerLatitude = latLng.latitude;//获取纬度

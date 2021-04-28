@@ -10,9 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * 接口地址管理
  *
- * @author
+ * @author llw
  */
-
 public class ServiceGenerator {
 
 
@@ -21,9 +20,9 @@ public class ServiceGenerator {
      * 将上方的API接口地址进行拆分得到不变的一部分,实际开发中可以将这一部分作为服务器的ip访问地址
      */
     //地址
-    //public static String BASE_URL = null;
-    public static String BASE_URL = "https://free-api.heweather.net";//地址
-    /*private static String urlType(int type) {
+    public static String BASE_URL = null;
+
+    private static String urlType(int type) {
         switch (type) {
             //和风天气
             case 0:
@@ -64,8 +63,6 @@ public class ServiceGenerator {
         return BASE_URL;
     }
 
-     */
-
     /**
      * 创建服务  参数就是API服务
      *
@@ -95,13 +92,12 @@ public class ServiceGenerator {
 
         //在Retrofit中设置httpclient
         //设置地址  就是上面的固定地址,如果你是本地访问的话，可以拼接上端口号  例如 +":8080"
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(urlType(type))
                 //用Gson把服务端返回的json数据解析成实体
                 .addConverterFactory(GsonConverterFactory.create())
                 //放入OKHttp，之前说过retrofit是对OkHttp的进一步封装
                 .client(okHttpClientBuilder.build())
                 .build();
-
         //返回这个创建好的API服务
         return retrofit.create(serviceClass);
     }
