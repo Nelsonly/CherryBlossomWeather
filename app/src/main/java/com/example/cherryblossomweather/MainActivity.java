@@ -222,6 +222,7 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
     TextView tvBroadcastState;//播报状态
     @BindView(R.id.fab_voice_search)
     FloatingActionButton fabVoiceSearch;//语音搜索浮动按钮
+
     private boolean changeCityState = false;//常用城市列表  收缩状态  false 收缩  true 展开
 
     private boolean isChangeCity = false;//是否可以展开，如果没有添加常用城市，自然不能展开
@@ -737,7 +738,7 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
             recyclerView.setLayoutManager(manager);
             recyclerView.setAdapter(provinceAdapter);
             provinceAdapter.notifyDataSetChanged();
-            //runLayoutAnimationRight(recyclerView);//动画展示
+//            runLayoutAnimationRight(recyclerView);//动画展示
             provinceAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                 @Override
                 public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -1100,7 +1101,7 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
             //根据V7版本的原则，只要是200就一定有数据，我们可以不用做判空处理，但是，为了使程序不ANR，还是要做的，信自己得永生
             NowResponse data = response.body();
             if (data != null) {
-                Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+//                Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
                 tvTemperature.setText(data.getNow().getTemp());//温度
 
                 tempStr = "当前温度：" + data.getNow().getTemp() + "度，天气" + data.getNow().getText() + "。";
@@ -1108,7 +1109,7 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
                 dialogWeatherState = data.getNow().getText();
                 dialogWeatherStateCode = Integer.parseInt(data.getNow().getIcon());
 
-                tvTemperature.setTypeface(typeface);//使用字体
+//                tvTemperature.setTypeface(typeface);//使用字体
                 if (flag) {
                     ivLocation.setVisibility(View.VISIBLE);//显示定位图标
                 } else {
@@ -1150,7 +1151,7 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
                 minutelyList.addAll(response.body().getMinutely());
                 mAdapterMinutePrec.notifyDataSetChanged();
 
-                checkAppVersion();//检查版本信息
+//                checkAppVersion();//检查版本信息
 
             } else {
                 ToastUtils.showShortToast(context, "分钟级降水数据为空");

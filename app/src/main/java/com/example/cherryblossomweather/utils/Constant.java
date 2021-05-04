@@ -10,7 +10,7 @@ public class Constant {
     /**
      * 和风天气KEY
      */
-    public static final String API_KEY = "83402386a0ab4de49522a32f1af3968d";
+    public static final String API_KEY = "10211963c07a400b994324cc32a256a2";
     /**
      * 更新APP的用户Id
      */
