@@ -12,6 +12,9 @@
         android:layout_height="match_parent"
         android:background="@drawable/img_5"
         android:scaleType="centerCrop" />
+    <com.example.cherryblossomweather.view.snowfall.SnowView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <!--主要的布局文件-->
     <LinearLayout
@@ -73,7 +76,7 @@
             <com.scwang.smartrefresh.header.StoreHouseHeader
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:shhText="GOOD WEATHER" />
+                app:shhText="Cherry Weather" />
             <!--NestedScrollView 里面只能包裹一个大的布局，
             当这个布局长度超出手机展示的部分就可以滚动，其中overScrollMode="never"
             的意思是隐藏掉滚动条到顶部和底部时的水波纹-->
@@ -117,6 +120,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:animateLayoutChanges="true"
+                            android:layout_marginBottom="20dp"
                             android:gravity="center_vertical">
                             <!--星期-->
                             <TextView
@@ -126,504 +130,570 @@
                                 android:layout_marginEnd="@dimen/dp_12"
                                 android:paddingLeft="16dp"
                                 android:text="星期一"
-                                android:textColor="@color/white"
-                                android:textSize="18sp" />
-                            <!--播放图标-->
-                            <ImageView
-                                android:id="@+id/iv_voice_broadcast"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:background="@mipmap/icon_broadcast"
-                                android:visibility="gone" />
-
-                            <!--播报状态-->
-                            <TextView
-                                android:id="@+id/tv_broadcast_state"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_12"
-                                android:textColor="@color/white_4" />
+                                android:textColor="@color/white"/>
                         </LinearLayout>
-
-                        <!--温度-->
-                        <RelativeLayout
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_8"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tv_temperature"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:text="0"
-                                android:textColor="@color/white"
-                                android:textSize="72sp"
-                                android:typeface="sans" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_toRightOf="@+id/tv_temperature"
-                                android:text="℃"
-                                android:textColor="@color/white"
-                                android:textSize="24sp" />
-                        </RelativeLayout>
-                        <!--最高温和最低温-->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_12">
-
-                            <TextView
-                                android:id="@+id/tv_temp_height"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="#FFF"
-                                android:textSize="@dimen/sp_14" />
-
-                            <TextView
-                                android:id="@+id/tv_temp_low"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/temp_min_tx"
-                                android:textSize="@dimen/sp_14" />
-                        </LinearLayout>
-
-                        <!--天气状况和空气质量-->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_8"
-                            android:orientation="horizontal">
-                            <!--天气状况-->
-                            <TextView
-                                android:id="@+id/tv_info"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/sp_14" />
-
-                            <!--空气质量-->
-                            <TextView
-                                android:id="@+id/tv_air_info"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="@dimen/dp_8"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/sp_14" />
-                        </LinearLayout>
-
-                        <!--城市-->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_16"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tv_city"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="定位中"
-                                android:textColor="@color/white"
-                                android:textSize="18sp" />
-
-                            <ImageView
-                                android:id="@+id/iv_location"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:background="@mipmap/icon_location"
-                                android:visibility="gone" />
-                        </LinearLayout>
-                        <!--切换城市-->
-                        <!--常用城市快捷切换-->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_change_city"
+                            app:cardCornerRadius="10dp"
+                            app:cardElevation="0dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:paddingBottom="4dp"
+                            android:layout_marginBottom="10dp"
+                            app:cardBackgroundColor="@color/white_1"
+                            >
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="12dp"
-                                android:visibility="gone" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <!--上一次更新时间-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableLeft="@mipmap/icon_weather_sun"
-                            android:drawablePadding="4dp"
-                            android:text="Good Weather"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/sp_12" />
-
-                        <TextView
-                            android:id="@+id/tv_old_time"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="最近更新时间："
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/sp_12" />
-                    </LinearLayout>
-
-                    <!--分隔线 增加UI效果-->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginRight="20dp"
-                        android:alpha="0.1"
-                        android:background="@color/white" />
-
-                    <!--分钟级降水-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp">
-
-                        <TextView
-                            android:id="@+id/tv_precipitation"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableLeft="@mipmap/icon_weather_prec"
-                            android:drawablePadding="4dp"
-                            android:text="降水预告"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/sp_12" />
-                        <!--查看更多降水信息-->
-                        <TextView
-                            android:id="@+id/tv_prec_more"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableRight="@mipmap/icon_more_blue_small"
-                            android:gravity="center_vertical"
-                            android:text="查看详情"
-                            android:textColor="@color/blue_more"
-                            android:textSize="@dimen/sp_12" />
-                    </LinearLayout>
-
-                    <!--降水详情列表-->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_prec_detail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/dp_12"
-                        android:paddingTop="@dimen/dp_8"
-                        android:paddingRight="@dimen/dp_12"
-                        android:visibility="gone" />
-
-                    <!--分隔线 增加UI效果-->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginRight="20dp"
-                        android:alpha="0.1"
-                        android:background="@color/white" />
-
-                    <!--用于显示逐小时天气-->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_hourly"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp" />
-
-                    <!--用于显示天气预报数据-->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp" />
-
-                    <!--查看更多天气预报-->
-                    <TextView
-                        android:id="@+id/tv_more_daily"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@mipmap/icon_more_blue"
-                        android:gravity="center"
-                        android:padding="@dimen/dp_12"
-                        android:text="更多天气预报"
-                        android:textColor="@color/blue_more" />
-
-                    <!--空气质量-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="20dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-                            <!--标题-->
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="空气质量"
-                                android:textColor="@color/white"
-                                android:textSize="18sp" />
-
-                            <!--更多空气质量信息-->
-                            <TextView
-                                android:id="@+id/tv_more_air"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:drawableRight="@mipmap/icon_more_blue"
-                                android:padding="@dimen/dp_4"
-                                android:text="更多"
-                                android:textColor="@color/blue_more"
-                                android:textSize="@dimen/sp_14" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="8dp">
-                            <!--污染指数 动画展示-->
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="vertical">
+                                android:layout_height="wrap_content">
 
                                 <TextView
+                                    android:id="@+id/tv_temperature"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp"
-                                    android:text="污染指数"
-                                    android:textColor="#DAEBEE"
-                                    android:textSize="14sp" />
-                                <!--显示污染指数进度值-->
-                                <com.example.mvplibrary.view.RoundProgressBar
-                                    android:id="@+id/rpb_aqi"
-                                    android:layout_width="120dp"
-                                    android:layout_height="120dp"
-                                    android:layout_gravity="center"
-                                    app:round_bg_color="#C6D7F4"
-                                    app:round_progress_color="#FBFEF7" />
-                            </LinearLayout>
-                            <!--其他指数-->
-                            <LinearLayout
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginStart="20dp"
+                                    android:text="0"
+                                    android:textColor="@color/white"
+                                    android:textSize="72sp"
+                                    android:typeface="sans"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/textView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+
+                                    android:layout_marginStart="4dp"
+                                    android:layout_toRightOf="@+id/tv_temperature"
+                                    android:text="℃"
+                                    android:textColor="@color/white"
+                                    android:textSize="50sp"
+                                    app:layout_constraintStart_toEndOf="@+id/tv_temperature"
+                                    app:layout_constraintTop_toTopOf="@+id/tv_temperature" />
+                                <!--最高温和最低温-->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintStart_toEndOf="@+id/textView"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                                    <TextView
+                                        android:id="@+id/tv_temp_height"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="14"
+                                        android:textColor="#FFF"
+                                        android:textSize="@dimen/sp_14" />
+
+                                    <TextView
+                                        android:id="@+id/tv_temp_low"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="4"
+                                        android:textColor="@color/temp_min_tx"
+                                        android:textSize="@dimen/sp_14" />
+                                </LinearLayout>
+                                <!--天气状况和空气质量-->
+                                <LinearLayout
+                                    android:id="@+id/linearLayout3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20dp"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/tv_temperature">
+                                    <!--天气状况-->
+                                    <TextView
+                                        android:id="@+id/tv_info"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/sp_14" />
+
+                                    <!--空气质量-->
+                                    <TextView
+                                        android:id="@+id/tv_air_info"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingLeft="@dimen/dp_8"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/sp_14" />
+                                </LinearLayout>
+                                <!--城市-->
+                                <LinearLayout
+                                    android:id="@+id/linearLayout4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="4dp"
+                                    app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
+                                    app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+                                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                                    <TextView
+                                        android:id="@+id/tv_city"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="定位中"
+                                        android:textColor="@color/white"
+                                        android:textSize="18sp" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_location"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:background="@mipmap/icon_location"
+                                        android:visibility="gone" />
+                                </LinearLayout>
+
+                                <!--切换城市-->
+                                <!--常用城市快捷切换-->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:animateLayoutChanges="true"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/rv_change_city"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:padding="12dp"
+                                        android:visibility="gone" />
+                                </LinearLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+<!--                    &lt;!&ndash;上一次更新时间&ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="20dp"-->
+<!--                        android:paddingLeft="20dp"-->
+<!--                        android:paddingRight="20dp">-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:drawableLeft="@mipmap/icon_weather_sun"-->
+<!--                            android:drawablePadding="4dp"-->
+<!--                            android:text="Good Weather"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/sp_12" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/tv_old_time"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:gravity="right"-->
+<!--                            android:text="最近更新时间："-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/sp_12" />-->
+<!--                    </LinearLayout>-->
+
+<!--                    &lt;!&ndash;分隔线 增加UI效果&ndash;&gt;-->
+<!--                    <View-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="1dp"-->
+<!--                        android:layout_marginLeft="20dp"-->
+<!--                        android:layout_marginTop="8dp"-->
+<!--                        android:layout_marginRight="20dp"-->
+<!--                        android:alpha="0.1"-->
+<!--                        android:background="@color/white" />-->
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/white_1"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+                        <!--分钟级降水-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp">
+
+                            <TextView
+                                android:id="@+id/tv_precipitation"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:orientation="vertical">
-                                <!--PM10-->
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                android:drawableLeft="@mipmap/icon_weather_prec"
+                                android:drawablePadding="4dp"
+                                android:text="降水预告"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/sp_12" />
+                            <!--查看更多降水信息-->
+                            <TextView
+                                android:id="@+id/tv_prec_more"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableRight="@mipmap/icon_more_blue_small"
+                                android:gravity="center_vertical"
+                                android:text="查看详情"
+                                android:textColor="@color/blue_more"
+                                android:textSize="@dimen/sp_12" />
+                        </LinearLayout>
 
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:text="PM10"
-                                        android:textColor="@color/blue_one"
-                                        android:textSize="12sp" />
+                        <!--降水详情列表-->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_prec_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/dp_12"
+                            android:paddingTop="@dimen/dp_8"
+                            android:paddingRight="@dimen/dp_12"
+                            android:visibility="gone" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
 
-                                    <TextView
-                                        android:id="@+id/tv_pm10"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:textColor="@color/white"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
 
-                                <!--PM2.5-->
-                                <LinearLayout
-                                    android:layout_width="match_parent"
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/white_1"
+                        >
+                        <!--用于显示逐小时天气-->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_hourly"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="12dp" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/white_1"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+                        <!--用于显示天气预报数据-->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp" />
+                        <!--查看更多天气预报-->
+                        <TextView
+                            android:id="@+id/tv_more_daily"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@mipmap/icon_more_blue"
+                            android:gravity="center"
+                            android:padding="@dimen/dp_12"
+                            android:text="更多天气预报"
+                            android:textColor="@color/blue_more" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/white_1"
+                        >
+                        <!--空气质量-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="20dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical">
+                                <!--标题-->
+                                <TextView
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp">
+                                    android:layout_weight="1"
+                                    android:text="空气质量"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp" />
 
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:text="PM2.5"
-                                        android:textColor="@color/blue_one"
-                                        android:textSize="12sp" />
-
-                                    <TextView
-                                        android:id="@+id/tv_pm25"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:textColor="@color/white"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                                <!--NO2 二氧化氮-->
-                                <LinearLayout
-                                    android:layout_width="match_parent"
+                                <!--更多空气质量信息-->
+                                <TextView
+                                    android:id="@+id/tv_more_air"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp">
+                                    android:drawableRight="@mipmap/icon_more_blue"
+                                    android:padding="@dimen/dp_4"
+                                    android:text="更多"
+                                    android:textColor="@color/blue_more"
+                                    android:textSize="@dimen/sp_14" />
+                            </LinearLayout>
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:padding="8dp">
+                                <!--污染指数 动画展示-->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="8dp"
+                                        android:text="污染指数"
+                                        android:textColor="#DAEBEE"
+                                        android:textSize="14sp" />
+                                    <!--显示污染指数进度值-->
+                                    <com.example.mvplibrary.view.RoundProgressBar
+                                        android:id="@+id/rpb_aqi"
+                                        android:layout_width="120dp"
+                                        android:layout_height="120dp"
+                                        android:layout_gravity="center"
+                                        app:round_bg_color="#C6D7F4"
+                                        app:round_progress_color="#FBFEF7" />
+                                </LinearLayout>
+                                <!--其他指数-->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+                                    <!--PM10-->
                                     <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center">
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
 
                                         <TextView
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="0dp"
                                             android:layout_height="wrap_content"
-                                            android:text="NO"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="PM10"
                                             android:textColor="@color/blue_one"
                                             android:textSize="12sp" />
 
                                         <TextView
-                                            android:layout_width="wrap_content"
+                                            android:id="@+id/tv_pm10"
+                                            android:layout_width="0dp"
                                             android:layout_height="wrap_content"
-                                            android:text="2"
-                                            android:textColor="@color/blue_one"
-                                            android:textSize="8sp" />
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textColor="@color/white"
+                                            android:textSize="12sp" />
                                     </LinearLayout>
 
-                                    <TextView
-                                        android:id="@+id/tv_no2"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:textColor="@color/white"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                                <!--SO2 二氧化硫-->
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp">
-
+                                    <!--PM2.5-->
                                     <LinearLayout
-                                        android:layout_width="0dp"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center">
+                                        android:layout_marginTop="12dp">
 
                                         <TextView
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="0dp"
                                             android:layout_height="wrap_content"
-                                            android:text="SO"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="PM2.5"
                                             android:textColor="@color/blue_one"
                                             android:textSize="12sp" />
 
                                         <TextView
-                                            android:layout_width="wrap_content"
+                                            android:id="@+id/tv_pm25"
+                                            android:layout_width="0dp"
                                             android:layout_height="wrap_content"
-                                            android:text="2"
-                                            android:textColor="@color/blue_one"
-                                            android:textSize="8sp" />
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textColor="@color/white"
+                                            android:textSize="12sp" />
                                     </LinearLayout>
 
-                                    <TextView
-                                        android:id="@+id/tv_so2"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:textColor="@color/white"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                                <!--O3 臭氧-->
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp">
-
+                                    <!--NO2 二氧化氮-->
                                     <LinearLayout
-                                        android:layout_width="0dp"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center">
+                                        android:layout_marginTop="12dp">
+
+                                        <LinearLayout
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="NO"
+                                                android:textColor="@color/blue_one"
+                                                android:textSize="12sp" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="2"
+                                                android:textColor="@color/blue_one"
+                                                android:textSize="8sp" />
+                                        </LinearLayout>
 
                                         <TextView
-                                            android:layout_width="wrap_content"
+                                            android:id="@+id/tv_no2"
+                                            android:layout_width="0dp"
                                             android:layout_height="wrap_content"
-                                            android:text="O"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textColor="@color/white"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+
+                                    <!--SO2 二氧化硫-->
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="12dp">
+
+                                        <LinearLayout
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="SO"
+                                                android:textColor="@color/blue_one"
+                                                android:textSize="12sp" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="2"
+                                                android:textColor="@color/blue_one"
+                                                android:textSize="8sp" />
+                                        </LinearLayout>
+
+                                        <TextView
+                                            android:id="@+id/tv_so2"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textColor="@color/white"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+
+                                    <!--O3 臭氧-->
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="12dp">
+
+                                        <LinearLayout
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="O"
+                                                android:textColor="@color/blue_one"
+                                                android:textSize="12sp" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="3"
+                                                android:textColor="@color/blue_one"
+                                                android:textSize="8sp" />
+                                        </LinearLayout>
+
+                                        <TextView
+                                            android:id="@+id/tv_o3"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textColor="@color/white"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+
+                                    <!--CO 一氧化碳-->
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="12dp">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="CO"
                                             android:textColor="@color/blue_one"
                                             android:textSize="12sp" />
 
                                         <TextView
-                                            android:layout_width="wrap_content"
+                                            android:id="@+id/tv_co"
+                                            android:layout_width="0dp"
                                             android:layout_height="wrap_content"
-                                            android:text="3"
-                                            android:textColor="@color/blue_one"
-                                            android:textSize="8sp" />
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textColor="@color/white"
+                                            android:textSize="12sp" />
                                     </LinearLayout>
-
-                                    <TextView
-                                        android:id="@+id/tv_o3"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:textColor="@color/white"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                                <!--CO 一氧化碳-->
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp">
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:text="CO"
-                                        android:textColor="@color/blue_one"
-                                        android:textSize="12sp" />
-
-                                    <TextView
-                                        android:id="@+id/tv_co"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:textColor="@color/white"
-                                        android:textSize="12sp" />
                                 </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
-                    </LinearLayout>
-
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/white_1"
+                        >
                     <!--风力展示-->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -693,7 +763,17 @@
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/white_1"
+                        >
                     <!--用于展示生活指数的布局-->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -798,24 +878,10 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp_14" />
                     </LinearLayout>
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </LinearLayout>
-
-    <!--浮动按钮 语音搜索-->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_voice_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/dp_20"
-        android:clickable="true"
-        android:src="@mipmap/icon_voice_search"
-        app:backgroundTint="@color/white"
-        app:backgroundTintMode="screen"
-        app:fabSize="mini"
-        app:hoveredFocusedTranslationZ="@dimen/dp_18"
-        app:pressedTranslationZ="@dimen/dp_18" />
 
 </FrameLayout>

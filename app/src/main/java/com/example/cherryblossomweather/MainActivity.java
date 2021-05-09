@@ -142,8 +142,8 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
     TextView tvTempLow;//最低温
     @BindView(R.id.tv_city)
     TextView tvCity;//城市
-    @BindView(R.id.tv_old_time)
-    TextView tvOldTime;//最近更新时间
+//    @BindView(R.id.tv_old_time)
+//    TextView tvOldTime;//最近更新时间
     @BindView(R.id.rv)
     RecyclerView rv;//天气预报显示列表
     @BindView(R.id.tv_uv)
@@ -216,12 +216,12 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
     RecyclerView rvPrecDetail;//分钟级降水列表
     @BindView(R.id.rv_change_city)
     RecyclerView rvChangeCity;//点击切换常用城市
-    @BindView(R.id.iv_voice_broadcast)
-    ImageView ivVoiceBroadcast;//语音播报天气
-    @BindView(R.id.tv_broadcast_state)
-    TextView tvBroadcastState;//播报状态
-    @BindView(R.id.fab_voice_search)
-    FloatingActionButton fabVoiceSearch;//语音搜索浮动按钮
+//    @BindView(R.id.iv_voice_broadcast)
+//    ImageView ivVoiceBroadcast;//语音播报天气
+//    @BindView(R.id.tv_broadcast_state)
+//    TextView tvBroadcastState;//播报状态
+//    @BindView(R.id.fab_voice_search)
+//    FloatingActionButton fabVoiceSearch;//语音搜索浮动按钮
 
     private boolean changeCityState = false;//常用城市列表  收缩状态  false 收缩  true 展开
 
@@ -516,12 +516,12 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
 
         updateWallpaper();
 
-        //是否显示语音搜索按钮
-        if (SPUtils.getBoolean(Constant.VOICE_SEARCH_BOOLEAN, true, context)) {
-            fabVoiceSearch.show();
-        } else {
-            fabVoiceSearch.hide();
-        }
+//        //是否显示语音搜索按钮
+//        if (SPUtils.getBoolean(Constant.VOICE_SEARCH_BOOLEAN, true, context)) {
+//            fabVoiceSearch.show();
+//        } else {
+//            fabVoiceSearch.hide();
+//        }
 
     }
 
@@ -900,9 +900,9 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
      *
      * @param view 控件
      */
-    @OnClick({R.id.iv_map, R.id.iv_add, R.id.tv_warn, R.id.iv_voice_broadcast,
+    @OnClick({R.id.iv_map, R.id.iv_add, R.id.tv_warn,
             R.id.tv_city, R.id.tv_more_daily, R.id.tv_more_air, R.id.tv_more_lifestyle,
-            R.id.tv_prec_more, R.id.fab_voice_search})
+            R.id.tv_prec_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_map://地图天气
@@ -918,9 +918,9 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
                 intent.putExtra("warnBodyString", warnBodyString);
                 startActivity(intent);
                 break;
-            case R.id.iv_voice_broadcast://语音播报
-                SpeechUtil.startVoiceBroadcast(voiceStr, tvBroadcastState);
-                break;
+//            case R.id.iv_voice_broadcast://语音播报
+//                SpeechUtil.startVoiceBroadcast(voiceStr, tvBroadcastState);
+//                break;
             case R.id.tv_city://当用户没有打开GPS定位时，则可以点击这个TextView进行重新定位
                 if (isOpenLocationServiceEnable()) {//已开启定位
                     if (tvCity.getText().toString().contains("定位")) {
@@ -962,27 +962,27 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
                     state = true;
                 }
                 break;
-            case R.id.fab_voice_search://语音搜索
-                SpeechUtil.startDictation(cityName -> {
-                    if (cityName.isEmpty()) {
-                        return;
-                    }
-                    //判断字符串是否包含句号
-                    if (!cityName.contains("。")) {
-                        //然后判断成员变量和临时变量是否一样，不一样则赋值。
-                        if (!district.equals(cityName)) {
-                            district = cityName;
-                            Log.d("city",district);
-                            //加载弹窗
-                            showLoadingDialog();
-                            ToastUtils.showShortToast(context, "正在搜索城市："+district+"，请稍后...");
-                            flag = false;//不属于定位，则不需要显示定位图标
-                            //搜索城市
-                            mPresent.newSearchCity(district);
-                        }
-                    }
-                });
-                break;
+//            case R.id.fab_voice_search://语音搜索
+//                SpeechUtil.startDictation(cityName -> {
+//                    if (cityName.isEmpty()) {
+//                        return;
+//                    }
+//                    //判断字符串是否包含句号
+//                    if (!cityName.contains("。")) {
+//                        //然后判断成员变量和临时变量是否一样，不一样则赋值。
+//                        if (!district.equals(cityName)) {
+//                            district = cityName;
+//                            Log.d("city",district);
+//                            //加载弹窗
+//                            showLoadingDialog();
+//                            ToastUtils.showShortToast(context, "正在搜索城市："+district+"，请稍后...");
+//                            flag = false;//不属于定位，则不需要显示定位图标
+//                            //搜索城市
+//                            mPresent.newSearchCity(district);
+//                        }
+//                    }
+//                });
+//                break;
             default:
                 break;
         }
@@ -1120,7 +1120,7 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
 
                 String time = DateUtils.updateTime(data.getUpdateTime());//截去前面的字符，保留后面所有的字符，就剩下 22:00
 
-                tvOldTime.setText("最近更新时间：" + WeatherUtil.showTimeInfo(time) + time);
+//                tvOldTime.setText("最近更新时间：" + WeatherUtil.showTimeInfo(time) + time);
                 tvWindDirection.setText("风向     " + data.getNow().getWindDir());//风向
                 tvWindPower.setText("风力     " + data.getNow().getWindScale() + "级");//风力
                 wwBig.startRotate();//大风车开始转动
@@ -1303,12 +1303,12 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
                         break;
                 }
             }
-            //字符串拼接
-            voiceStr = dateDetailStr + tempStr + tempMaxMin + precStr +
-                    airStr + tvComf.getText().toString() +
-                    tvAir.getText().toString() + warnStr;
+//            //字符串拼接
+//            voiceStr = dateDetailStr + tempStr + tempMaxMin + precStr +
+//                    airStr + tvComf.getText().toString() +
+//                    tvAir.getText().toString() + warnStr;
             //图标显示
-            ivVoiceBroadcast.setVisibility(View.VISIBLE);
+//            ivVoiceBroadcast.setVisibility(View.VISIBLE);
         } else {
             ToastUtils.showShortToast(context, CodeToStringUtils.WeatherCode(response.body().getCode()));
         }
