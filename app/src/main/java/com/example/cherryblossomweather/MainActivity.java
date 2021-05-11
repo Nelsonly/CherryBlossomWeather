@@ -39,8 +39,16 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
+import com.baidu.mapapi.search.sug.SuggestionResult;
+import com.baidu.mapapi.search.sug.SuggestionSearch;
+import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.example.cherryblossomweather.adapter.PanoramaAdapter;
+import com.example.cherryblossomweather.ui.PanoramaActivity;
+import com.example.mvplibrary.bean.CountryScore;
+import com.example.mvplibrary.bean.KeyScore;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -109,6 +117,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -124,7 +133,7 @@ import static com.example.mvplibrary.utils.RecyclerViewAnimation.runLayoutAnimat
  * @author
  */
 public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
-        implements WeatherContract.IWeatherView, View.OnScrollChangeListener {
+        implements OnGetSuggestionResultListener,WeatherContract.IWeatherView, View.OnScrollChangeListener, PanoramaAdapter.OnItemClickListener {
 
     @BindView(R.id.tv_warn)
     TextView tvWarn;//灾害预警跑马灯
@@ -300,7 +309,9 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
     //播放的内容
     private String voiceStr = "";
 
-
+    private PanoramaAdapter panoramaAdapter;
+    private SuggestionSearch mSuggestionSearch = null;
+    private RecyclerView mSugListView;
     //数据初始化
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -327,10 +338,28 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
         scrollView.setOnScrollChangeListener(this);//指定当前页面，不写则滑动监听无效
         //加载常用城市
         loadingCommonlyUsedCity();
-        //初始化语音播报
-        SpeechUtil.init(context);
+//        //初始化语音播报
+//        SpeechUtil.init(context);
+        mSugListView = (RecyclerView)findViewById(R.id.rv_panorma);
+        // 初始化建议搜索模块，注册建议搜索事件监听
+        mSuggestionSearch = SuggestionSearch.newInstance();
+        mSuggestionSearch.setOnGetSuggestionResultListener(this);
+        initPanorama();
     }
 
+    private void initPanorama(){
+        CountryScore countryScore = LitePal.order(Constant.countryScore+" desc").findFirst(CountryScore.class);
+        KeyScore keyScore = LitePal.order(Constant.keyScore+" desc").findFirst(KeyScore.class);
+        if(countryScore!=null||keyScore!=null) {
+            mSuggestionSearch.requestSuggestion((new SuggestionSearchOption())
+                    .keyword(keyScore.getKeyName()) // 关键字
+                    .city(countryScore.getCountryName())); // 城市
+        }else {
+            mSuggestionSearch.requestSuggestion((new SuggestionSearchOption())
+                    .keyword("风景") // 关键字
+                    .city("北京")); // 城市
+        }
+    }
 
     /**
      * 检查APP版本
@@ -1034,6 +1063,8 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
 
                     //V7版本中需要先获取到城市ID ,在结果返回值中再进行下一步的数据查询
                     mPresent.newSearchCity(district);
+                    initPanorama();
+
                 });
             }
         }
@@ -1465,6 +1496,7 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
         wwBig.stop();//停止大风车
         wwSmall.stop();//停止小风车
         EventBus.getDefault().unregister(this);//解注
+        mSuggestionSearch.destroy();
         super.onDestroy();
     }
 
@@ -1520,7 +1552,7 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
             mPopupWindow.dismiss();
         });
         aboutUs.setOnClickListener(view -> {//关于我们
-            startActivity(new Intent(context, AboutUsActivity.class));
+            startActivity(new Intent(context, PanoramaActivity.class));
             mPopupWindow.dismiss();
         });
         setting.setOnClickListener(view -> {//应用设置
@@ -1584,4 +1616,40 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
         return super.onKeyDown(keyCode, event);
     }
 
+
+
+    @Override
+    public void onGetSuggestionResult(SuggestionResult suggestionResult) {
+        if (suggestionResult == null || suggestionResult.getAllSuggestions() == null) {
+            return;
+        }
+        List<HashMap<String, String>> suggest = new ArrayList<>();
+        for (SuggestionResult.SuggestionInfo info : suggestionResult.getAllSuggestions()) {
+            if (info.getKey() != null && info.getDistrict() != null && info.getCity() != null) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("key",info.getKey());
+                map.put("tag",info.getTag());
+                map.put("city",info.getCity());
+                map.put("dis",info.getDistrict());
+                map.put("uid",info.getUid());
+                suggest.add(map);
+            }
+        }
+        panoramaAdapter = new PanoramaAdapter(this);
+        panoramaAdapter.addData(suggest);
+        panoramaAdapter.setOnItemClickListener(this::onCitysClick);
+        mSugListView.setAdapter(panoramaAdapter);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(RecyclerView.VERTICAL);
+        mSugListView.setLayoutManager(llm);
+    }
+
+    @Override
+    public void onCitysClick(String key,String path, String city) {
+        Intent intent = new Intent(context, PanoramaActivity.class);
+        intent.putExtra("tag",key);
+        intent.putExtra("city",city);
+        intent.putExtra("path",path);
+        startActivity(intent);
+    }
 }

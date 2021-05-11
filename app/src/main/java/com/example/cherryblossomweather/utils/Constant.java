@@ -124,4 +124,12 @@ public class Constant {
     public static final String VOLUME = "volume";
 
 
+    public static String countryName = "countryname";
+
+    public static String countryScore = "countryscore";
+
+    public static String keyName  = "keyname";
+
+    public static String keyScore = "keyscore";
+
 }

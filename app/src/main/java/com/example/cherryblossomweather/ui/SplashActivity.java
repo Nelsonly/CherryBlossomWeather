@@ -85,7 +85,7 @@ public class SplashActivity extends MvpActivity<SplashContract.SplashPresenter> 
         rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.RECORD_AUDIO)
+                Manifest.permission.READ_PHONE_STATE)
                 .subscribe(granted -> {
                     if (granted) {//申请成功
                         //得到权限可以进入APP

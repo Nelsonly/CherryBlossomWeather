@@ -6,7 +6,11 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.baidu.lbsapi.BMapManager;
+import com.baidu.lbsapi.MKGeneralListener;
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.mvplibrary.BaseApplication;
@@ -21,7 +25,7 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.tencent.bugly.crashreport.CrashReport;
+//import com.tencent.bugly.crashreport.CrashReport;
 
 import org.litepal.LitePal;
 
@@ -41,6 +45,7 @@ public class WeatherApplication extends BaseApplication {
 
     private static Activity sActivity;
 
+    public BMapManager bMapManager = null;
     public static Context getMyContext() {
         return weatherApplication == null ? null : weatherApplication.getApplicationContext();
     }
@@ -62,7 +67,7 @@ public class WeatherApplication extends BaseApplication {
         activityManager = new ActivityManager();
         context = getApplicationContext();
         weatherApplication = this;
-
+        initEngineManager(this);
 
         this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
@@ -111,7 +116,7 @@ public class WeatherApplication extends BaseApplication {
         //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
         SDKInitializer.setCoordType(CoordType.BD09LL);
 
-        CrashReport.initCrashReport(getApplicationContext(), "d3637c0f25", true);
+//        CrashReport.initCrashReport(getApplicationContext(), "d3637c0f25", true);
         //配置讯飞语音SDK
 //        SpeechUtility.createUtility(this, SpeechConstant.APPID +"=6018c2cb");
     }
@@ -146,5 +151,36 @@ public class WeatherApplication extends BaseApplication {
                 return new ClassicsFooter(context).setDrawableSize(20);
             }
         });
+    }
+    public void initEngineManager(Context context) {
+        if (bMapManager == null) {
+            bMapManager = new BMapManager(context);
+        }
+
+        if (!bMapManager.init(new MyGeneralListener())) {
+            Toast.makeText(
+                    this,
+                    "BMapManager  初始化错误!", Toast.LENGTH_LONG).show();
+        }
+        Log.d("ljx", "initEngineManager");
+    }
+    // 常用事件监听，用来处理通常的网络错误，授权验证错误等
+    public static class MyGeneralListener implements MKGeneralListener {
+
+        @Override
+        public void onGetPermissionState(int iError) {
+            // 非零值表示key验证未通过
+            if (iError != 0) {
+                // 授权Key错误：
+                Toast.makeText(
+                        WeatherApplication.getMyContext(),
+                        "请在AndoridManifest.xml中输入正确的授权Key,并检查您的网络连接是否正常！error: "
+                                + iError, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(
+                        WeatherApplication.getMyContext(), "key认证成功",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
