@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
@@ -46,6 +47,7 @@ import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.cherryblossomweather.adapter.PanoramaAdapter;
+import com.example.cherryblossomweather.bean.EpidemicDataResponse;
 import com.example.cherryblossomweather.ui.PanoramaActivity;
 import com.example.mvplibrary.bean.CountryScore;
 import com.example.mvplibrary.bean.KeyScore;
@@ -225,6 +227,8 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
     RecyclerView rvPrecDetail;//分钟级降水列表
     @BindView(R.id.rv_change_city)
     RecyclerView rvChangeCity;//点击切换常用城市
+    @BindView(R.id.tv_epidemic)
+    TextView tv_epidemic;
 //    @BindView(R.id.iv_voice_broadcast)
 //    ImageView ivVoiceBroadcast;//语音播报天气
 //    @BindView(R.id.tv_broadcast_state)
@@ -510,6 +514,7 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
         flag = false;//切换城市得到的城市不属于定位，因此这里隐藏定位图标
         //V7版本中需要先获取到城市ID ,在结果返回值中再进行下一步的数据查询
         mPresent.newSearchCity(event.mLocation);//相应事件时
+        mPresent.epidemic(event.mCity);
     }
 
 
@@ -860,7 +865,7 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
                                         public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                                             showLoadingDialog();
                                             district = arealist.get(position).getName();//选中的区/县赋值给这个全局变量
-
+                                            mPresent.epidemic(city);
                                             //V7版本中需要先获取到城市ID ,在结果返回值中再进行下一步的数据查询
                                             mPresent.newSearchCity(district);//切换城市时
 
@@ -1055,14 +1060,17 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
                 //在数据请求之前放在加载等待弹窗，返回结果后关闭弹窗
                 showLoadingDialog();
 
+
                 //V7版本中需要先获取到城市ID ,在结果返回值中再进行下一步的数据查询
                 mPresent.newSearchCity(district);//定位返回时
-
+                mPresent.epidemic(city);
                 //下拉刷新
                 refresh.setOnRefreshListener(refreshLayout -> {
 
                     //V7版本中需要先获取到城市ID ,在结果返回值中再进行下一步的数据查询
                     mPresent.newSearchCity(district);
+                    mPresent.epidemic(city);
+
                     initPanorama();
 
                 });
@@ -1642,6 +1650,33 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(RecyclerView.VERTICAL);
         mSugListView.setLayoutManager(llm);
+    }
+
+    @Override
+    public void getEpidemicResult(Response<EpidemicDataResponse> response) {
+        EpidemicDataResponse dataResponse = response.body();
+        String s  = "";
+        if (dataResponse.getNowConfirm() == 0){
+            s = "当前地区没有确诊病例，但也要注意疫情防控工作哦。";
+            tv_epidemic.setTextColor(Color.BLACK);
+        } else{
+            if (dataResponse.getUpdated()) {
+                s = "昨日没有新增病例";
+            } else {
+                s = "昨日新增病例" + dataResponse.getConfirm() + "人，";
+            }
+            s += "目前现存确诊" + dataResponse.getNowConfirm() + "例，";
+            if (dataResponse.getNowConfirm()<=10) {
+                s += "尽量少出门，注意做好疫情防控哦。";
+                tv_epidemic.setTextColor(Color.YELLOW);
+            }else {
+                tv_epidemic.setTextColor(Color.RED);
+                s += "注意少出门、勤洗手、出门带好口罩，多多注意疫情防控。";
+            }
+        }
+
+        tv_epidemic.setText(s);
+        tv_epidemic.setVisibility(View.VISIBLE);
     }
 
     @Override

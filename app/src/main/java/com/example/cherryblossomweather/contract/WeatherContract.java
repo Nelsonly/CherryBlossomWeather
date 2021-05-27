@@ -3,6 +3,7 @@ package com.example.cherryblossomweather.contract;
 import com.example.cherryblossomweather.api.ApiService;
 import com.example.cherryblossomweather.bean.AirNowResponse;
 import com.example.cherryblossomweather.bean.DailyResponse;
+import com.example.cherryblossomweather.bean.EpidemicDataResponse;
 import com.example.cherryblossomweather.bean.HourlyResponse;
 import com.example.cherryblossomweather.bean.LifestyleResponse;
 import com.example.cherryblossomweather.bean.MinutePrecResponse;
@@ -281,7 +282,27 @@ public class WeatherContract {
                 }
             });
         }
+        /**
+         * 获取
+         */
+        public void epidemic(String location) {
+            ApiService service = ServiceGenerator.createService(ApiService.class, 7);
+            service.epidemicData(location).enqueue(new NetCallBack<EpidemicDataResponse>() {
+                @Override
+                public void onSuccess(Call<EpidemicDataResponse> call, Response<EpidemicDataResponse> response) {
+                    if (getView() != null) {
+                        getView().getEpidemicResult(response);
+                    }
+                }
 
+                @Override
+                public void onFailed() {
+                    if (getView() != null) {
+                        getView().getDataFailed();
+                    }
+                }
+            });
+        }
 
     }
 
@@ -323,6 +344,7 @@ public class WeatherContract {
         //分钟级降水
         void getMinutePrecResult(Response<MinutePrecResponse> response);
 
+        void  getEpidemicResult(Response<EpidemicDataResponse> response);
         //错误返回
         void getDataFailed();
 

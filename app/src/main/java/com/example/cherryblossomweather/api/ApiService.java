@@ -4,6 +4,7 @@ package com.example.cherryblossomweather.api;
 import com.example.cherryblossomweather.bean.AirNowResponse;
 import com.example.cherryblossomweather.bean.BiYingImgResponse;
 import com.example.cherryblossomweather.bean.DailyResponse;
+import com.example.cherryblossomweather.bean.EpidemicDataResponse;
 import com.example.cherryblossomweather.bean.HourlyResponse;
 import com.example.cherryblossomweather.bean.LifestyleResponse;
 import com.example.cherryblossomweather.bean.MinutePrecResponse;
@@ -184,6 +185,9 @@ public interface ApiService {
      */
     @GET("/v7/minutely/5m?key=" + API_KEY)
    Call<MinutePrecResponse> getMinutePrec(@Query("location") String location);
+
+    @GET("/tasks/{location}")
+    Call<EpidemicDataResponse> epidemicData(@Path("location") String location);
 
 }
 

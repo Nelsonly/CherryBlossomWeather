@@ -236,14 +236,35 @@
                                         android:visibility="gone" />
                                 </LinearLayout>
 
+                                <com.example.mvplibrary.view.AlwaysMarqueeTextView
+                                    android:id="@+id/tv_epidemic"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="marquee"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="true"
+                                    android:lineSpacingExtra="21sp"
+                                    android:marqueeRepeatLimit="marquee_forever"
+                                    android:scrollHorizontally="true"
+                                    android:singleLine="true"
+                                    android:textColor="#ffffff"
+                                    android:textSize="16sp"
+                                    android:textStyle="normal"
+                                    android:visibility="gone"
+                                    android:layout_marginStart="20dp"
+                                    app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+                                    tools:text="昨日新增10人，现有病例20人，出门请注意防护哦." />
                                 <!--切换城市-->
                                 <!--常用城市快捷切换-->
                                 <LinearLayout
+                                    android:id="@+id/linearLayout2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:animateLayoutChanges="true"
-                                    app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
                                     <androidx.recyclerview.widget.RecyclerView

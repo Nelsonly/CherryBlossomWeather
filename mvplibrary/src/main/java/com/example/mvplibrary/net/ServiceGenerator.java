@@ -57,6 +57,9 @@ public class ServiceGenerator {
                 //网络手机壁纸返回地址
                 BASE_URL = "http://service.picasso.adesk.com";
                 break;
+            case 7:
+                BASE_URL = "http://192.168.84.123:5000/";
+                break;
             default:
                 break;
         }
