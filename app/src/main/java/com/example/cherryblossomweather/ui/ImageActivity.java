@@ -66,7 +66,7 @@ public class ImageActivity extends BaseActivity {
     private Bitmap bitmap;
 
 
-    //@Override
+    @Override
     public void initData(Bundle savedInstanceState) {
         showLoadingDialog();
         //透明状态栏
@@ -157,7 +157,9 @@ public class ImageActivity extends BaseActivity {
      */
     public boolean saveImageToGallery(Context context, Bitmap bitmap) {
         // 首先保存图片
-        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "good_weather";
+        String filePath = Environment.getExternalStorageDirectory().getAbsoluteFile()
+                + "/" + Environment.DIRECTORY_PICTURES
+                + "/" + getString(R.string.app_name);
         File appDir = new File(filePath);
         if (!appDir.exists()) {
             appDir.mkdir();

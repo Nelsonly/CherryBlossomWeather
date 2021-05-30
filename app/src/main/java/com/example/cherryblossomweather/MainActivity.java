@@ -349,6 +349,8 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
         mSuggestionSearch = SuggestionSearch.newInstance();
         mSuggestionSearch.setOnGetSuggestionResultListener(this);
         initPanorama();
+        //设置每日提示弹窗
+        setTipDialog();
     }
 
     private void initPanorama(){
