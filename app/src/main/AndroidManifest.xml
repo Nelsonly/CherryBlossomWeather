@@ -62,7 +62,7 @@
         <activity android:name=".ui.SearchCityActivity" /> <!-- 百度定位AK -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="ysZvue8ts6sh77YsxOjBl78EE6q1pF4E" >
+            android:value="AZQmDh9dpz95wTi7DPMLAAklinYsUE1T" >
         </meta-data>
         <!--百度定位服务  这个服务也是放在application标签下的-->
         <service

@@ -1682,11 +1682,12 @@ public class MainActivity extends MvpActivity<WeatherContract.WeatherPresenter>
     }
 
     @Override
-    public void onCitysClick(String key,String path, String city) {
-        Intent intent = new Intent(context, PanoramaActivity.class);
+    public void onCitysClick(String key,String path, String city,String district) {
+        Intent intent = new Intent(context,PanoramaActivity.class);
         intent.putExtra("tag",key);
         intent.putExtra("city",city);
         intent.putExtra("path",path);
+        intent.putExtra("dis",district);
         startActivity(intent);
     }
 }

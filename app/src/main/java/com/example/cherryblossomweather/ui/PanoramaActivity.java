@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,9 @@ import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.baidu.pano.platform.plugin.indooralbum.IndoorAlbumPlugin;
+import com.example.cherryblossomweather.bean.NewSearchCityResponse;
+import com.example.cherryblossomweather.bean.NowResponse;
+import com.example.cherryblossomweather.contract.NowContract;
 import com.example.mvplibrary.base.BaseActivity;
 import com.example.mvplibrary.bean.CountryScore;
 import com.example.mvplibrary.bean.KeyScore;
@@ -26,6 +30,7 @@ import com.example.cherryblossomweather.R;
 import com.example.cherryblossomweather.WeatherApplication;
 import com.example.cherryblossomweather.adapter.PanoramaAdapter;
 import com.example.cherryblossomweather.utils.Constant;
+import com.example.mvplibrary.mvp.MvpActivity;
 
 import org.litepal.LitePal;
 
@@ -34,13 +39,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import retrofit2.Response;
 
 /**
  * @author nelson
  */
-public class PanoramaActivity extends BaseActivity implements OnGetSuggestionResultListener, PanoramaAdapter.OnItemClickListener {
+public class PanoramaActivity extends MvpActivity<NowContract.NowPresenter> implements NowContract.IWeatherView,OnGetSuggestionResultListener, PanoramaAdapter.OnItemClickListener {
 
-        @Override
+    @Override
     public void initBeforeView(Bundle savedInstanceState) {
         super.initBeforeView(savedInstanceState);
         WeatherApplication app = (WeatherApplication) this.getApplication();
@@ -50,8 +56,19 @@ public class PanoramaActivity extends BaseActivity implements OnGetSuggestionRes
         }
     }
 
+    @Override
+    protected NowContract.NowPresenter createPresent() {
+        return new NowContract.NowPresenter();
+    }
+
     @BindView(R.id.panorama)
     PanoramaView mPanoView;
+    @BindView(R.id.tv_pan_temp)
+    TextView tvPanTemp;
+    @BindView(R.id.tv_pan_wind)
+    TextView tvPanWind;
+    @BindView(R.id.tv_pan_weather)
+    TextView tvPanWeather;
     private SuggestionSearch mSuggestionSearch = null;
 
     // 搜索关键字输入窗口
@@ -65,6 +82,7 @@ public class PanoramaActivity extends BaseActivity implements OnGetSuggestionRes
     private int score;
     private String uid;
     private String key;
+    private String dis;
     //    PanoramaView mPanoView;
     @Override
     public void initData(Bundle savedInstanceState) {
@@ -72,6 +90,8 @@ public class PanoramaActivity extends BaseActivity implements OnGetSuggestionRes
         key = intent.getStringExtra("tag");
         city = intent.getStringExtra("city");
         uid  = intent.getStringExtra("path");
+        dis = intent.getStringExtra("dis");
+        mPresent.newSearchCity(dis);
         mPanoView.setPanoramaViewListener(new PanoramaViewListener() {
             @Override
             public void onLoadPanoramaBegin() {
@@ -200,9 +220,10 @@ public class PanoramaActivity extends BaseActivity implements OnGetSuggestionRes
                 HashMap<String, String> map = new HashMap<>();
                 map.put("key",info.getKey());
                 map.put("tag",info.getTag());
-                map.put("dis",info.getTag());
+                map.put("dis",info.getDistrict());
                 map.put("city",info.getCity());
                 map.put("uid",info.getUid());
+                map.put("address",info.getAddress());
                 suggest.add(map);
             }
         }
@@ -216,18 +237,20 @@ public class PanoramaActivity extends BaseActivity implements OnGetSuggestionRes
     }
 
     @Override
-    public void onCitysClick(String key,String uid,String city) {
+    public void onCitysClick(String key,String uid,String city,String dis) {
+        mPresent.newSearchCity(dis);
+
         endTime = System.currentTimeMillis();
         int score = (int) (endTime-startTime)/3600/10+5;
         saveToSql(this.key,this.city,this.score);
-        mPanoView.setPanoramaByUid(uid, PanoramaView.PANOTYPE_STREET);
+        mPanoView.setPanoramaByUid(uid,PanoramaView.PANOTYPE_STREET);
         panoramaAdapter.clearAll();
         this.key = key;
         this.city = city;
         this.score = score;
     }
     private void saveToSql(String key,String city,int score){
-        if(city == null || key == null) {
+        if(city==null||key == null) {
             return;
         }
         if (score == 0){
@@ -260,4 +283,25 @@ public class PanoramaActivity extends BaseActivity implements OnGetSuggestionRes
         }
     }
 
+    @Override
+    public void getWeatherDataFailed() {
+
+    }
+
+    @Override
+    public void getNewSearchCityResult(Response<NewSearchCityResponse> response) {
+        if (response.body().getCode().equals(Constant.SUCCESS_CODE)) {
+            mPresent.nowWeather(response.body().getLocation().get(0).getId());
+        }
+    }
+
+    @Override
+    public void getNowResult(Response<NowResponse> response) {
+        if(response.body().getCode().equals(Constant.SUCCESS_CODE)){
+            NowResponse nowResponse = response.body();
+            tvPanTemp.setText(nowResponse.getNow().getTemp()+"°C");
+            tvPanWeather.setText(nowResponse.getNow().getText());
+            tvPanWind.setText(nowResponse.getNow().getWindDir()+" "+nowResponse.getNow().getWindSpeed()+"级");
+        }
+    }
 }
